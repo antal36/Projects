@@ -1,0 +1,93 @@
+from __future__ import annotations
+import unittest
+from azul.game import Game
+from azul.simple_types import RED, BLACK, GREEN, BLUE, YELLOW
+
+class GameTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.game = Game()
+    
+    def test_game_all_correct(self) -> None:
+        self.assertEqual(self.game.start_game([1,2]), True)
+        self.assertEqual(self.game.table_area_gettter.state(), 'S\nRYGL\nBRYG\nLBRY\nGLBR\nYGLB\n')
+        self.assertEqual(self.game.take(1, 0, 1, RED), True)
+        self.assertEqual(self.game.take(2, 1, 2, GREEN), True)
+        self.assertEqual(self.game.take(1, 1, 3, BLACK), True)
+        self.assertEqual(self.game.take(2, 0, 4, GREEN), True)
+        self.assertEqual(self.game.take(1, 2, 5, GREEN), True)
+    
+    def test_game_all_wrong(self) -> None:
+        self.assertEqual(self.game.start_game([1,2,3,4,5]), False)
+        self.assertEqual(self.game.start_game([]), False)
+        self.assertEqual(self.game.start_game([1,2]), True)
+        self.assertEqual(self.game.take(2, 1, 1, RED), False)
+        self.assertEqual(self.game.take(1, 1, 1, BLUE), False)
+        self.assertEqual(self.game.take(1, 1, 5, RED), False)
+    
+    def test_whole_game(self) -> None:
+        self.game.start_game([1,2])
+        self.assertEqual(self.game.take(1, 0, 1, RED), True)
+        self.assertEqual(self.game.take(2, 0, 2, RED), True)
+        self.assertEqual(self.game.take(1, 1, 3, RED), True)
+        self.assertEqual(self.game.take(2, 1, 4, RED), True)
+        self.assertEqual(self.game.take(1, 2, 5, BLACK), True)
+        self.assertEqual(self.game.table_area_gettter.state(), "SYGLBYGLBYGLBYGB\n\n\n\n\n\n")
+        self.assertEqual(self.game.take(2, 3, 0, BLUE), True)
+        self.assertEqual(self.game.table_area_gettter.state(), "YGLYGLYGLYG\n\n\n\n\n\n")
+        self.assertEqual(self.game.take(1, 3, 0, GREEN), True)
+        self.assertEqual(self.game.take(2, 2, 0, BLACK), True)
+        self.assertEqual(self.game.take(1, 4, 0, YELLOW), True)
+
+        self.assertEqual(self.game.table_area_gettter.state(), 'S\nRYGL\nBRYG\nLBRY\nGLBR\nYGLB\n')
+        self.assertEqual(self.game.take(2, 0, 1, GREEN), True)
+        self.assertEqual(self.game.take(1, 0, 2, GREEN), True)
+        self.assertEqual(self.game.take(2, 1, 3, RED), True)
+        self.assertEqual(self.game.take(1, 1, 4, RED), True)
+        self.assertEqual(self.game.take(2, 2, 5, BLUE), True)
+        self.assertEqual(self.game.take(1, 4, 0, YELLOW), True)
+        self.assertEqual(self.game.take(2, 3, 0, GREEN), True)
+        self.assertEqual(self.game.take(1, 2, 0, BLACK), True)
+        self.assertEqual(self.game.take(2, 4, 0, BLUE), True)
+        self.assertEqual(self.game.take(1, 3, 0, RED), True)
+        self.assertEqual(self.game.table_area_gettter.state(), 'S\nRYGL\nBRYG\nLBRY\nGLBR\nYGLB\n')
+
+        self.assertEqual(self.game.take(1, 0, 1, BLACK), True)
+        self.assertEqual(self.game.take(2, 0, 2, YELLOW), True)
+        self.assertEqual(self.game.take(1, 1, 3, BLACK), True)
+        self.assertEqual(self.game.take(2, 4, 0, BLUE), True)
+        self.assertEqual(self.game.take(1, 3, 0, RED), True)
+        self.assertEqual(self.game.take(2, 3, 0, GREEN), True)
+        self.assertEqual(self.game.take(1, 1, 4, BLACK), True)
+        self.assertEqual(self.game.take(2, 1, 0, YELLOW), True)
+        self.assertEqual(self.game.take(1, 4, 5, GREEN), True)
+        self.assertEqual(self.game.take(2, 2, 0, BLUE), True)
+        self.assertEqual(self.game.take(1, 4, 0, GREEN), True)
+        self.assertEqual(self.game.take(2, 1, 0, RED), True)
+        self.assertEqual(self.game.take(1, 2, 0, YELLOW), True)
+        self.assertEqual(self.game.take(2, 1, 0, BLACK), True)
+        self.assertEqual(self.game.table_area_gettter.state(), 'S\nRYGL\nBRYG\nLBRY\nGLBR\nYGLB\n')
+
+        self.assertEqual(self.game.take(2, 0, 2, BLUE), True)
+        self.assertEqual(self.game.take(1, 0, 1, YELLOW), True)
+        self.assertEqual(self.game.take(2, 2, 3, RED), True)
+        self.assertEqual(self.game.take(1, 1, 0, GREEN), True)
+        self.assertEqual(self.game.take(2, 1, 0, BLACK), True)
+        self.assertEqual(self.game.take(1, 4, 4, GREEN), True)
+        self.assertEqual(self.game.take(2, 3, 5, YELLOW), True)
+        self.assertEqual(self.game.take(1, 4, 0, BLUE), True)
+        self.assertEqual(self.game.take(2, 4, 0, RED), True)
+        self.assertEqual(self.game.take(1, 2, 0, YELLOW), True)
+        self.assertEqual(self.game.take(2, 3, 0, GREEN), True)
+        self.assertEqual(self.game.take(1, 4, 0, BLACK), True)
+        self.assertEqual(self.game.table_area_gettter.state(), 'S\nRYGL\nBRYG\nLBRY\nGLBR\nYGLB\n')
+
+        self.assertEqual(self.game.take(1, 0, 2, BLUE), True)
+        self.assertEqual(self.game.take(2, 0, 3, BLACK), True)
+        self.assertEqual(self.game.take(1, 1, 1, YELLOW), True)
+        self.assertEqual(self.game.take(2, 1, 4, BLUE), True)
+        self.assertEqual(self.game.take(1, 2, 5, GREEN), True)
+        self.assertEqual(self.game.take(2, 1, 0, BLUE), True)
+        self.assertEqual(self.game.take(1, 1, 0, YELLOW), True)
+        self.assertEqual(self.game.take(2, 2, 0, RED), True)
+        self.assertEqual(self.game.take(1, 4, 0, GREEN), True)
+        self.assertEqual(self.game.take(2, 4, 0, BLACK), True)
